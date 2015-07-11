@@ -1,43 +1,44 @@
 #maze {
   border-collapse: collapse;
   margin: 0 auto;
-}
 
-#maze td {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #eee;
-  position: relative;
-}
+  td {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #eee;
+    position: relative;
 
-#maze td:before {
-  content: attr(id);
-  color: #ccc;
-  display: block;
-  font-size: .8em;
-  text-align: center;
-  line-height: 40px;
-}
+    &:before {
+      content: attr(id);
+      color: #ccc;
+      display: block;
+      font-size: .8em;
+      text-align: center;
+      line-height: 40px;
+    }
 
-#maze td.path:after {
-  content: '';
-  width: 80%;
-  height: 80%;
-  border: 2px solid #83AAF2;
-  box-sizing: border-box;
-  top: 10%;
-  left: 10%;
-  position: absolute;
-}
+    &.path {
+      &:after {
+        content: '';
+        width: 80%;
+        height: 80%;
+        border: 2px solid #83AAF2;
+        box-sizing: border-box;
+        top: 10%;
+        left: 10%;
+        position: absolute;
+      }
 
-#maze td.path:before {
-  content: none;
-}
+      &:before { content: none; }
+    }
 
-#maze td.start:before,
-#maze td.start:after,
-#maze td.end:before,
-#maze td.end:after {
-  color: #000;
-  border-color: #115FF0;
+    &.start,
+    &.end {
+      &:before,
+      &:after {
+        border-color: #115FF0;
+        color: #000;
+      }
+    }
+  }
 }
