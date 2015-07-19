@@ -9,7 +9,7 @@ describe('Step class', () => {
     step = new Step({ x: 1, y: 2 }, { x: 1, y: 3 }, 1, parentStep);
   });
 
-  it('created properly', () => {
+  it('instantiates properly', () => {
     expect(step.x).toEqual(1);
     expect(step.y).toEqual(2);
     expect(step.totalSteps).toEqual(1);
