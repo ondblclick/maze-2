@@ -8,14 +8,13 @@ export class Solver {
     this.closed = [];
     this.open = [];
     this.step = 0;
-    this.maxSearhDistance = 10;
   }
 
-  _addOpen(step) {
+  _addToOpen(step) {
     this.open.push(step);
   }
 
-  _removeOpen(step) {
+  _removeFromOpen(step) {
     for (var i = 0; i < this.open.length; i++) {
       if (this.open[i] === step) {
         this.open.splice(i, 1);
@@ -40,7 +39,7 @@ export class Solver {
     return this.open[bestIndex];
   }
 
-  _addClosed(step) {
+  _addToClosed(step) {
     this.closed.push(step);
   }
 
@@ -62,27 +61,30 @@ export class Solver {
     }
   }
 
-  findPath(start, end, maxSteps) {
+  _matches(start, end) {
+    return start.x === end.x && start.y === end.y;
+  }
+
+  findPath(start, end) {
     var current;
     var neighbors;
     var neighborRecord;
     var stepCost;
 
     // You must add the starting step
-    // this.reset()
-    this._addOpen(new Step(start, end, this.step, false));
+    this._addToOpen(new Step(start, end, this.step, false));
 
     while (this.open.length !== 0) {
       current = this._getBestOpen();
 
       // Check if goal has been discovered to build a path
-      if (current.x === end.x && current.y === end.y) {
+      if (this._matches(current, end)) {
         return this._buildPath(current, []);
       }
 
       // Move current into closed set
-      this._removeOpen(current);
-      this._addClosed(current);
+      this._removeFromOpen(current);
+      this._addToClosed(current);
 
       // Get neighbors from the map and check them
       neighbors = Cell.findBy(current.x, current.y).nonBlockedNeighbors();
@@ -100,7 +102,7 @@ export class Solver {
         neighborRecord = this._isOpen(neighbors[i]);
         if (!neighborRecord || stepCost < neighborRecord.totalSteps) {
           if (!neighborRecord) {
-            this._addOpen(new Step(neighbors[i], end, stepCost, current));
+            this._addToOpen(new Step(neighbors[i], end, stepCost, current));
           } else {
             neighborRecord.parent = current;
             neighborRecord.totalSteps = stepCost;
