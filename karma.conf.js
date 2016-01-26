@@ -3,49 +3,33 @@
 
 module.exports = function(config) {
   config.set({
-
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
-
     plugins : [
       'karma-browserify',
       'karma-coverage',
-      //'karma-babel-preprocessor',
       'karma-jasmine',
-      'karma-sinon',
       'karma-phantomjs-launcher',
       'karma-spec-reporter'
     ],
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify', 'jasmine', 'sinon'],
+    frameworks: ['browserify', 'jasmine'],
 
     // list of files / patterns to load in the browser
-    files: [
-      //'src/**/*.js',
-      'tests/**/*{spec,test}.js'
-    ],
+    files: ['tests/**/*{spec,test}.js'],
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      //'src/**/*.js': ['browserify', 'coverage'],
       'tests/**/*.js': ['browserify']
     },
 
     browserify: {
       debug: true,
-      transform: [ ["babelify", { "optional": ["runtime"] }] ],
-      configure: function(bundle) {
-        bundle.on('prebundle', function() {
-          // console.log('prebundle');
-        });
-      }
+      transform: [["babelify", { "optional": ["runtime"] }]]
     },
 
     // test results reporter to use

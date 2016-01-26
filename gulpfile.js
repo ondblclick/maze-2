@@ -24,7 +24,7 @@ var paths = {
   ],
   temp: './.tmp',
   sass: './src/scss/**/*.scss',
-  sassEntry: './src/scss/main.scss'
+  sassDest: './src/scss/main.scss'
 };
 
 gulp.task('default', ['watch']);
@@ -61,11 +61,11 @@ gulp.task('clean', function (done) {
 });
 
 gulp.task('sass', function () {
-  return gulp.src(paths.sassEntry)
-    .pipe(g.sourcemaps.init())
+  return gulp.src(paths.sassDest)
+    // .pipe(g.sourcemaps.init())
     .pipe(g.sass({ errLogToConsole: true }))
     .pipe(g.autoprefixer({ browsers: ['last 2 versions', 'ie 10'] }))
-    .pipe(g.sourcemaps.write())
+    // .pipe(g.sourcemaps.write())
     .pipe(gulp.dest(paths.temp + '/css'))
     .pipe(g.connect.reload());
 });
