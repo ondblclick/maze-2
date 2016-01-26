@@ -11,17 +11,10 @@ var buffer = require('vinyl-buffer');
 var karma = require('karma').server;
 var del = require('del');
 
-var babelifyConfig = {
-  optional: ["runtime"],
-  blacklist: ["regenerator"]
-};
-
 var paths = {
   app: './src',
   scriptsEntry: './src/js/app.js',
-  html: [
-    './src/index.html'
-  ],
+  html: './src/index.html',
   temp: './.tmp',
   sass: './src/scss/**/*.scss',
   sassDest: './src/scss/main.scss'
@@ -41,7 +34,19 @@ gulp.task('build', function (done) {
 });
 
 gulp.task('scripts', function () {
-  return browserifyShare();
+  var b = browserify(paths.scriptsEntry, {
+    cache: {},
+    packageCache: {},
+    debug: true
+  });
+
+  watchify(b).on('update', function() {
+    bundleShare(b);
+  });
+
+  b.on('log', g.util.log);
+
+  return bundleShare(b);
 });
 
 gulp.task('test', function (done) {
@@ -78,23 +83,9 @@ gulp.task('serve', ['build'], function() {
   });
 });
 
-function browserifyShare() {
-  var b = browserify(paths.scriptsEntry, {
-    cache: {},
-    packageCache: {},
-    debug: true
-  });
+// function browserifyShare() {
 
-  b.transform(babelify.configure(babelifyConfig));
-
-  watchify(b).on('update', function() {
-    bundleShare(b);
-  });
-
-  b.on('log', g.util.log);
-
-  return bundleShare(b);
-}
+// }
 
 function bundleShare(b) {
   return b.bundle()
