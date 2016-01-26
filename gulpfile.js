@@ -83,13 +83,9 @@ gulp.task('serve', ['build'], function() {
   });
 });
 
-// function browserifyShare() {
-
-// }
-
 function bundleShare(b) {
   return b.bundle()
-    .pipe(g.plumber({errorHandler: g.notify.onError('<%= error.message %>')}))
+    .pipe(g.plumber({ errorHandler: g.notify.onError('<%= error.message %>') }))
     .pipe(source('app.js'))
     .pipe(buffer())
     .pipe(gulp.dest(paths.temp + '/js'))
